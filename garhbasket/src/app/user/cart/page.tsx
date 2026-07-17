@@ -86,13 +86,19 @@ function CartPage() {
                                    
                                         <span className='font-semibold text-gray-800 w-6 texxt-center'> {item.quantity} </span>
                                     
-                                    <button className='bg-white p-1.5 rounded-full hover:bg-green-100 transition-all border border-gray-200' onClick={()=>dispatch(increaseQuantity(item._id))}> 
+                                    <button className='bg-white p-1.5 rounded-full hover:bg-green-100 transition-all border border-gray-200' 
+                                    // onClick={()=>dispatch(increaseQuantity(item._id))}
+                                    onClick={() => item._id && dispatch(increaseQuantity(item._id))}
+                                    > 
                                         <Plus size={14} className='text-green-700'/>
                                     </button>
 
                                 </div>
 
-                                <button className='sm:ml-4 mt-3 sm:mt-0 text-black-500 hover:text-red-700 transition-all' onClick={()=>dispatch(removeFromCart(item._id))}> <Trash2 size={20}/> </button>
+                                <button className='sm:ml-4 mt-3 sm:mt-0 text-black-500 hover:text-red-700 transition-all' 
+                                // onClick={()=>dispatch(removeFromCart(item._id))}
+                                onClick={() => item._id && dispatch(removeFromCart(item._id))}
+                                > <Trash2 size={20}/> </button>
                                 
 
                             </motion.div>

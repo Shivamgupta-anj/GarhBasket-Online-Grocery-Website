@@ -78,7 +78,8 @@
 
 import AdminOrderCard from '@/components/AdminOrderCard'
 import { getSocket } from "@/lib/socket";
-import { IOrder } from '@/models/order.model'
+// import { IOrder } from '@/models/order.model'
+import { IOrder } from "@/components/AdminOrderCard"
 import axios from 'axios'
 import { ArrowLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'

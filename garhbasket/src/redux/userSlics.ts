@@ -1,5 +1,50 @@
-import {createSlice} from "@reduxjs/toolkit";
+// import {createSlice} from "@reduxjs/toolkit";
+// import mongoose from 'mongoose';
+// interface Iuser{
+//     _id?: mongoose.Types.ObjectId,
+//     name : string,
+//     email : string,
+//     password ?: string,
+//     mobile? : string,
+//     role : "user" | "delivery boy" | "admin",
+//     image?: string,
+    
+// }
+// interface IUserSlice{
+//     userData:Iuser | null,
+   
+// }
+
+
+// // const initialState={
+// //     userData:null,
+    
+// // }
+
+// const initialState: IUserSlice = {
+//     userData:null,
+// }
+
+
+// const userSlice = createSlice({
+//     name:"user",
+//     initialState,
+//     reducers:{
+//          setUserData:(state,action)=>{
+//             state.userData=action.payload
+
+//          }
+//     }
+// })
+
+// export const {setUserData} = userSlice.actions
+// export default userSlice.reducer 
+
+
+
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import mongoose from 'mongoose';
+
 interface Iuser{
     _id?: mongoose.Types.ObjectId,
     name : string,
@@ -8,30 +53,25 @@ interface Iuser{
     mobile? : string,
     role : "user" | "delivery boy" | "admin",
     image?: string,
-    
 }
+
 interface IUserSlice{
     userData:Iuser | null,
-   
 }
 
-
-const initialState={
+const initialState: IUserSlice = {
     userData:null,
-    
 }
-
 
 const userSlice = createSlice({
     name:"user",
     initialState,
     reducers:{
-         setUserData:(state,action)=>{
-            state.userData=action.payload
-
+         setUserData:(state, action: PayloadAction<Iuser | null>) => {
+            state.userData = action.payload
          }
     }
 })
 
 export const {setUserData} = userSlice.actions
-export default userSlice.reducer 
+export default userSlice.reducer

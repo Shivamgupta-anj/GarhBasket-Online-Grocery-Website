@@ -175,7 +175,8 @@ import React from 'react'
 import { motion } from "framer-motion"
 import Image from 'next/image'
 import { Minus, Plus, ShoppingCart } from 'lucide-react'
-import { AppDispatch, RootState } from '@/redux/store'
+// import { AppDispatch, RootState } from '@/redux/store'
+import { RootState, AppDispatch } from '@/redux/store'
 import { addToCart, increaseQuantity, decreaseQuantity } from '@/redux/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -193,7 +194,9 @@ interface IGrocery {
 
 function GroceryItemCard({ item }: { item: IGrocery }) {
   const dispatch = useDispatch<AppDispatch>()
-  const { cartData } = useSelector((state: Rootstate) => state.cart)
+  // const { cartData } = useSelector((state: Rootstate) => state.cart)
+  // const { cartData } = useSelector((state: RootState) => state.cart)
+  const { cartData } = useSelector((state: RootState) => state.cart)
   const cartItem = cartData.find(i => i._id == item._id)
 
   return (

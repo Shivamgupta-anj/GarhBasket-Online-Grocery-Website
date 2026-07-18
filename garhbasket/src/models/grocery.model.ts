@@ -27,6 +27,7 @@ const grocerySchema = new mongoose.Schema<IGrocery>({
             "Beverages & Drinks",
             "Personal Care",
             "Household Essentials",
+            // "Instant & Packaged Food",
             "Instant & Packaged Food",
             "Baby & Pet Care"
 

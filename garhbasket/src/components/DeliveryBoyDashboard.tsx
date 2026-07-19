@@ -1164,7 +1164,12 @@ function DeliveryBoyDashboard({earning}:{earning:number}) {
             <LiveMap userLocation={userLocation} deliveryBoyLocation={deliveryBoyLocation} />
           </div>
 
-            <DeliveryChat orderId={activeOrder.order._id} deliveryBoyId={userData?._id?.toString()!}/>
+            {/* <DeliveryChat orderId={activeOrder.order._id} deliveryBoyId={userData?._id?.toString()!}/> */}
+            <DeliveryChat 
+    orderId={activeOrder.order._id} 
+    deliveryBoyId={userData?._id?.toString()!}
+    disabled={activeOrder.order.deliveryOtpVerification === true}
+/>
             {/* {userData?._id && (
      <DeliveryChat orderId={activeOrder.order._id} deliveryBoyId={userData._id.toString()} />
    )} */}

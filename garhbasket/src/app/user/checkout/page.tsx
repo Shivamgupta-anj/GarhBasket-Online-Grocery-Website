@@ -1397,6 +1397,10 @@ function Checkout() {
             alert("Please set your location first — allow location access or search for your area.")
             return
         }
+          if (!address.pincode.trim()) {                     // 👈 add this
+        alert("Please enter your pincode before placing the order.")
+        return
+    }
         try {
             await axios.post("/api/user/order", {
                 userId: userData?._id,
@@ -1434,6 +1438,10 @@ function Checkout() {
             alert("Please set your location first — allow location access or search for your area.")
             return
         }
+         if (!address.pincode.trim()) {                     // 👈 add this
+        alert("Please enter your pincode before placing the order.")
+        return
+    }
         try {
             const result = await axios.post("/api/user/payment", {
                 userId: userData?._id,
@@ -1471,26 +1479,75 @@ function Checkout() {
         requestLocation()
     }, [])
 
+    // useEffect(() => {
+    //     const fetchAddress = async () => {
+    //         if (!position) return
+    //         try {
+    //             const result = await axios.get(
+    //                 `https://nominatim.openstreetmap.org/reverse?lat=${position[0]}&lon=${position[1]}&format=json`
+    //             )
+    //             const addr = result.data.address
+    //             setAddress(prev => ({
+    //                 ...prev,
+    //                 city: addr.city || addr.town || addr.village || addr.county || "",
+    //                 pincode: addr.postcode || prev.pincode,
+    //                 fullAddress: result.data.display_name
+    //             }))
+    //         } catch (err) {
+    //             console.log(err)
+    //         }
+    //     }
+    //     fetchAddress()
+    // }, [position])
     useEffect(() => {
-        const fetchAddress = async () => {
-            if (!position) return
-            try {
-                const result = await axios.get(
-                    `https://nominatim.openstreetmap.org/reverse?lat=${position[0]}&lon=${position[1]}&format=json`
-                )
-                const addr = result.data.address
-                setAddress(prev => ({
-                    ...prev,
-                    city: addr.city || addr.town || addr.village || addr.county || "",
-                    pincode: addr.postcode || prev.pincode,
-                    fullAddress: result.data.display_name
-                }))
-            } catch (err) {
-                console.log(err)
+    const fetchAddress = async () => {
+        if (!position) return
+        try {
+            const result = await axios.get(
+                `https://nominatim.openstreetmap.org/reverse?lat=${position[0]}&lon=${position[1]}&format=json&addressdetails=1&zoom=18`
+            )
+            const addr = result.data.address
+            let pincode = addr.postcode || ""
+            let city = addr.city || addr.town || addr.village || addr.county || ""
+            let fullAddress = result.data.display_name
+
+            if (!pincode) {
+                try {
+                    const fallback = await axios.get(
+                        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position[0]}&longitude=${position[1]}&localityLanguage=en`
+                    )
+                    pincode = fallback.data.postcode || ""
+                } catch (e) {
+                    console.log("BigDataCloud error:", e)
+                }
             }
+
+            // 3rd fallback: Google Geocoding API
+            if (!pincode) {
+                try {
+                    const googleRes = await axios.get(
+                        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position[0]},${position[1]}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}`
+                    )
+                    const components = googleRes.data.results?.[0]?.address_components || []
+                    const postalComponent = components.find((c: any) => c.types.includes("postal_code"))
+                    pincode = postalComponent?.long_name || ""
+                } catch (e) {
+                    console.log("Google geocode error:", e)
+                }
+            }
+
+            setAddress(prev => ({
+                ...prev,
+                city,
+                pincode: pincode || prev.pincode,
+                fullAddress
+            }))
+        } catch (err) {
+            console.log(err)
         }
-        fetchAddress()
-    }, [position])
+    }
+    fetchAddress()
+}, [position])
 
     const handleSearchQuery = async () => {
         if (!searchQuery.trim()) return
@@ -1597,6 +1654,7 @@ function Checkout() {
                                     onChange={(e) => setAddress({ ...address, pincode: e.target.value })}
                                     className="pl-10 w-full border rounded-lg p-3 text-sm bg-gray-50"
                                     placeholder="Pin Code"
+                                     required    
                                 />
                             </div>
                         </div>

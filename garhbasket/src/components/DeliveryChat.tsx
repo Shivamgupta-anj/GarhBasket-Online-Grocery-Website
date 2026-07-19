@@ -344,7 +344,8 @@ import { motion } from "framer-motion";
 
 type props = {
     orderId: string,
-    deliveryBoyId: string
+    deliveryBoyId: string,
+    disabled?:boolean
 }
 
 function DeliveryChat({ orderId, deliveryBoyId }: props) {
@@ -382,6 +383,7 @@ function DeliveryChat({ orderId, deliveryBoyId }: props) {
         const socket = getSocket()
 
         const message = {
+            _id: crypto.randomUUID(),   
             roomId: orderId,
             text: newMessage,
             senderId: deliveryBoyId,
@@ -488,7 +490,9 @@ function DeliveryChat({ orderId, deliveryBoyId }: props) {
                 <AnimatePresence>
                     {messages?.map((msg) => (
                         <motion.div
-                            key={msg._id?.toString()}
+                            key={msg._id?.toString()
+                                 ?? `${msg.senderId}-${msg.time}-${index}`
+                            }
                             initial={{ opacity: 0, y: 15 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0 }}
@@ -508,7 +512,20 @@ function DeliveryChat({ orderId, deliveryBoyId }: props) {
 
             </div>
 
-            <div className='flex gap-2 mt-3 border-t pt-3'>
+            {/* <div className='flex gap-2 mt-3 border-t pt-3'>
+                <input type="text" placeholder="Type a Message..." className="flex-1 bg-gray-100 px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-blue-500" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
+                <button className="bg-gray-600 hover:bg-green-700 p-3 rounded-xl text-white" onClick={sendMsg}>
+                    <Send size={18} />
+                </button>
+            </div>
+
+        </div>
+    )
+}
+
+export default DeliveryChat */}
+
+<div className='flex gap-2 mt-3 border-t pt-3'>
                 <input type="text" placeholder="Type a Message..." className="flex-1 bg-gray-100 px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-blue-500" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
                 <button className="bg-gray-600 hover:bg-green-700 p-3 rounded-xl text-white" onClick={sendMsg}>
                     <Send size={18} />

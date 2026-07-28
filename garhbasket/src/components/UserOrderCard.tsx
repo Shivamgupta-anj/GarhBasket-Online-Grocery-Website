@@ -1109,7 +1109,7 @@ function UserOrderCard({ order }: { order: IOrder }) {
                     </span>
                 )} */}
 
-                {status !== "Delivered" && (
+                {/* {status !== "Delivered" && (
     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
         order.isPaid
             ? "bg-white/20 text-white"
@@ -1120,6 +1120,22 @@ function UserOrderCard({ order }: { order: IOrder }) {
         {order.isPaid
             ? "PAID"
             : order.paymentMethod === "online"
+                ? "PAYMENT PENDING"
+                : "PAY ON DELIVERY"}
+    </span>
+)} */}
+
+{status !== "Delivered" && (
+    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+        order.isPaid
+            ? "bg-white/20 text-white"
+            : order.paymentMethod?.toLowerCase() === "online"
+                ? "bg-white text-amber-600"
+                : "bg-white text-red-600"
+    }`}>
+        {order.isPaid
+            ? "PAID"
+            : order.paymentMethod?.toLowerCase() === "online"
                 ? "PAYMENT PENDING"
                 : "PAY ON DELIVERY"}
     </span>

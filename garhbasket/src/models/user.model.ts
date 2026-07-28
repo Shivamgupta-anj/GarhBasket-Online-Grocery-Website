@@ -168,7 +168,7 @@ export interface Iuser {
     password?: string;
     mobile?: string;
     // 
-    roleSelected?: boolean;
+    // roleSelected?: boolean;
     // 
     role: "user" | "deliveryBoy" | "admin"; // ✅ Fixed: was "delivery boy"
     image?: string;
@@ -210,10 +210,10 @@ const userSchema = new mongoose.Schema<Iuser>({
         enum: ["user", "deliveryBoy", "admin"], // ✅ Fixed: was "delivery boy"
         default: "user"
     },
-    roleSelected: {
-    type: Boolean,
-    default: false
-},
+//     roleSelected: {
+//     type: Boolean,
+//     default: false
+// },
     image: {
         type: String,
     },

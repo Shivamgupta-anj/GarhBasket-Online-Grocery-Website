@@ -15,11 +15,11 @@ export async function POST(req: NextRequest) {
         console.log("MOBILE:", mobile) 
 
 
-        // const user = await User.findOneAndUpdate({email:session?.user?.email},{role,mobile},{new:true})
-        const user = await User.findOneAndUpdate(
-    {email:session?.user?.email},
-    {role, mobile, roleSelected: true},
-    {new:true}
+        const user = await User.findOneAndUpdate({email:session?.user?.email},{role,mobile},{new:true})
+    //     const user = await User.findOneAndUpdate(
+    // {email:session?.user?.email},
+    // {role, mobile, roleSelected: true},
+    // {new:true}
 )
           console.log("USER FOUND:", user)  
 
